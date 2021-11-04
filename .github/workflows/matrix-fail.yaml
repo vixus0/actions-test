@@ -1,0 +1,22 @@
+name: matrix-fail
+
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        group: [1, 2, 3, 4]
+    steps:
+      - env:
+          id: ${{ matrix.group }}
+        run: test "$id" -ne 3
+
+  status:
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - if: ${{ needs.test.result != 'success' }}
+        run: exit 1
