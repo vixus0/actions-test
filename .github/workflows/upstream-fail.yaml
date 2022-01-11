@@ -1,0 +1,31 @@
+name: upstream-fail
+
+on:
+  push:
+
+jobs:
+  good:
+    runs-on: ubuntu-latest
+    steps:
+      - run: exit 0
+
+  bad:
+    runs-on: ubuntu-latest
+    steps:
+      - run: exit 1
+
+  passes-incorrectly:
+    if: ${{ always() }}
+    needs: [good, bad]
+    runs-on: ubuntu-latest
+    steps:
+      - if: ${{ failure() }}
+        run: exit 1
+
+  fails-correctly:
+    if: ${{ always() }}
+    needs: [good, bad]
+    runs-on: ubuntu-latest
+    steps:
+      - if: ${{ contains(needs.*.result, 'failure') }}
+        run: exit 1
