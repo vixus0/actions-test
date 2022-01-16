@@ -9,9 +9,14 @@ jobs:
     outputs:
       matrix: ${{ steps.jobs-matrix.outputs.matrix }}
     steps:
+      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+        with:
+          repository: hellofresh/action-changed-files
+          path: action-changed-files
       - name: Generate jobs matrix
         id: jobs-matrix
-        uses: hellofresh/action-changed-files@v1
+        uses: ./action-changed-files
         with:
             pattern: (jobs|config)/(P<environment>[^/]+)
             default-patterns: |
