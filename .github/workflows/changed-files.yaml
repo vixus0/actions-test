@@ -18,7 +18,7 @@ jobs:
         id: jobs-matrix
         uses: ./action-changed-files
         with:
-            pattern: (jobs|config)/(P<environment>[^/]+)
+            pattern: (jobs|config)/(?P<job>[^/]+)
             default-patterns: |
                 common1
                 common2
@@ -27,7 +27,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: [generate]
     strategy:
-      matrix:
-        job: ${{ fromJSON(needs.generate.outputs.matrix) }}
+      matrix: ${{ fromJSON(needs.generate.outputs.matrix) }}
     steps:
       - run: echo ${{ matrix.job }}
