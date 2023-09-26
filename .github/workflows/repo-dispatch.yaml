@@ -1,0 +1,15 @@
+name: repo-dispatch
+
+on:
+  repository_dispatch:
+    types: [test]
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: print
+        env:
+          EVENT_PAYLOAD: ${{ toJSON(github.event) }}
+        run: echo "$EVENT_PAYLOAD" | jq
+
