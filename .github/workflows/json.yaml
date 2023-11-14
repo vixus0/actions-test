@@ -27,3 +27,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "wut exists"
+
+  end:
+    needs: [test1, test2]
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "the end"
