@@ -1,0 +1,27 @@
+name: json
+
+on:
+  push: {}
+
+jobs:
+  init:
+    runs-on: ubuntu-latest
+    outputs:
+      json: ${{ steps.defs.outputs.json }}
+    steps:
+      - id: defs
+        run: echo 'json={"foo":"bar"}' >> "$GITHUB_OUTPUT"
+
+  test1:
+    needs: [init]
+    if: fromJSON(needs.init.outputs.json).foo == 'bar'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "foo is bar"
+
+  test2:
+    needs: [init]
+    if: fromJSON(needs.init.outputs.json).wut
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "wut exists"
