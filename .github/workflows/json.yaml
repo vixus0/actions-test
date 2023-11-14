@@ -21,7 +21,9 @@ jobs:
 
   test2:
     needs: [init]
-    if: fromJSON(needs.init.outputs.json).wut
+    if: |
+      fromJSON(needs.init.outputs.json).wut
+      && fromJSON(needs.init.outputs.json).wut == 'baz'
     runs-on: ubuntu-latest
     steps:
       - run: echo "wut exists"
